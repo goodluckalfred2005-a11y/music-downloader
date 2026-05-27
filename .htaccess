@@ -1,0 +1,20 @@
+# Enable rewrite engine
+RewriteEngine On
+
+# Force HTTPS (uncomment if you have SSL)
+# RewriteCond %{HTTPS} off
+# RewriteRule ^(.*)$ https://%{HTTP_HOST}/$1 [R=301,L]
+
+# Prevent hotlinking (watu wengine kutoa link ya nyimbo zako)
+RewriteCond %{HTTP_REFERER} !^$
+RewriteCond %{HTTP_REFERER} !^https?://(www\.)?yoursite.com [NC]
+RewriteRule \.(mp3|mp4|zip)$ - [F,NC]
+
+# Set proper MIME types
+AddType audio/mpeg .mp3
+AddType video/mp4 .mp4
+
+# Cache control for downloads
+<FilesMatch "\.(mp3|mp4)$">
+    Header set Cache-Control "public, max-age=31536000"
+</FilesMatch>
